@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:projeto_final_personal_trainer/visao/dados_antropometria.dart';
 import '../modelo/aluno.dart';
 import 'package:projeto_final_personal_trainer/util/formatadores_input.dart';
+import 'dart:ui';
 
 class NovaAvaliacao extends StatefulWidget {
   const NovaAvaliacao({Key? key}) : super(key: key);
@@ -13,12 +14,13 @@ class NovaAvaliacao extends StatefulWidget {
 
 class _NovaAvaliacaoState extends State<NovaAvaliacao> {
   final _formKey = GlobalKey<FormState>();
+
   final nomeController = TextEditingController();
   final nascimentoController = TextEditingController();
   final telefoneController = TextEditingController();
   final emailController = TextEditingController();
   final dataProxController = TextEditingController();
-  final horarioProxController = TextEditingController(); // Controller para horário
+  final horarioProxController = TextEditingController();
 
   @override
   void dispose() {
@@ -27,7 +29,7 @@ class _NovaAvaliacaoState extends State<NovaAvaliacao> {
     telefoneController.dispose();
     emailController.dispose();
     dataProxController.dispose();
-    horarioProxController.dispose(); // Dispose do controller de horário
+    horarioProxController.dispose();
     super.dispose();
   }
 
@@ -39,13 +41,14 @@ class _NovaAvaliacaoState extends State<NovaAvaliacao> {
         telefone: telefoneController.text,
         email: emailController.text,
         dataProximaAvaliacao: dataProxController.text,
-        horarioProximaAvaliacao: horarioProxController.text, // Passando o horário para o objeto aluno
+        horarioProximaAvaliacao: horarioProxController.text,
       );
 
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DadosAntropometria(aluno: aluno),
+          builder: (context) =>
+              DadosAntropometria(aluno: aluno),
         ),
       );
     }
@@ -60,28 +63,52 @@ class _NovaAvaliacaoState extends State<NovaAvaliacao> {
     String? hint,
   }) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          hintText: hint,
-          filled: true,
-          fillColor: Colors.white70,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20), // Bordas arredondadas
+      padding: const EdgeInsets.only(bottom: 12),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: BackdropFilter(
+          filter:
+          ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.4),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.2),
+              ),
+            ),
+            child: TextFormField(
+              controller: controller,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+              decoration: InputDecoration(
+                labelText: label,
+                hintText: hint,
+                border: InputBorder.none,
+                contentPadding:
+                const EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 14),
+                labelStyle:
+                const TextStyle(color: Colors.white),
+                hintStyle:
+                const TextStyle(color: Colors.white70),
+              ),
+              validator: validator,
+              inputFormatters: inputFormatters,
+              keyboardType: keyboardType,
+            ),
           ),
         ),
-        validator: validator,
-        inputFormatters: inputFormatters,
-        keyboardType: keyboardType,
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final screenHeight = MediaQuery.of(context).size.height;
+    final screenHeight =
+        MediaQuery.of(context).size.height;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -103,7 +130,8 @@ class _NovaAvaliacaoState extends State<NovaAvaliacao> {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon:
+          const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -115,111 +143,129 @@ class _NovaAvaliacaoState extends State<NovaAvaliacao> {
               fit: BoxFit.cover,
             ),
           ),
+
+          // 🔥 overlay corrigido
           Positioned.fill(
-            child: Container(color: const Color.fromARGB(90, 0, 0, 0)),
+            child: Container(
+              color: const Color.fromARGB(140, 0, 0, 0),
+            ),
           ),
+
           SafeArea(
             child: SingleChildScrollView(
               child: ConstrainedBox(
-                constraints: BoxConstraints(minHeight: screenHeight),
+                constraints:
+                BoxConstraints(minHeight: screenHeight),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16),
                   child: Form(
                     key: _formKey,
                     child: Column(
                       children: [
-                        const SizedBox(height: kToolbarHeight + 16),
+                        const SizedBox(
+                            height: kToolbarHeight + 16),
+
                         _buildTextField(
                           controller: nomeController,
                           label: "Nome",
                           validator: (value) =>
-                          value == null || value.isEmpty ? "Digite o nome" : null,
+                          value == null || value.isEmpty
+                              ? "Digite o nome"
+                              : null,
                         ),
+
                         _buildTextField(
                           controller: nascimentoController,
                           label: "Data de Nascimento",
                           hint: "DD/MM/AAAA",
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FormatadoresInput.data],
-                          validator: (value) {
-                            // if (value == null || value.isEmpty) return 'Informe a data';
-                            // final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
-                            // if (digits.length != 8) return 'Data incompleta';
-                            return null;
-                          },
+                          keyboardType:
+                          TextInputType.number,
+                          inputFormatters: [
+                            FormatadoresInput.data
+                          ],
+                          validator: (value) => null,
                         ),
+
                         _buildTextField(
                           controller: telefoneController,
                           label: "Telefone",
                           hint: "(99) 99999-9999",
-                          keyboardType: TextInputType.phone,
-                          inputFormatters: [FormatadoresInput.telefone],
-                          validator: (value) {
-                            // if (value == null || value.isEmpty) return 'Informe o telefone';
-                            // final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
-                            // if (digits.length < 10) return 'Telefone inválido';
-                            return null;
-                          },
+                          keyboardType:
+                          TextInputType.phone,
+                          inputFormatters: [
+                            FormatadoresInput.telefone
+                          ],
+                          validator: (value) => null,
                         ),
+
                         _buildTextField(
                           controller: emailController,
                           label: "E-mail",
                           hint: "email@.com",
-                          keyboardType: TextInputType.emailAddress,
+                          keyboardType:
+                          TextInputType.emailAddress,
                           validator: (value) {
-                            // if (value == null || value.isEmpty) return 'Informe o e-mail';
-
-                            if (value == null || value.isEmpty) {
+                            if (value == null ||
+                                value.isEmpty) {
                               return null;
                             }
-
-                            if (!value.contains('@') || !value.contains('.')) {
+                            if (!value.contains('@') ||
+                                !value.contains('.')) {
                               return 'E-mail inválido';
                             }
                             return null;
                           },
                         ),
+
                         _buildTextField(
                           controller: dataProxController,
-                          label: "Data da Próxima Avaliação",
+                          label:
+                          "Data da Próxima Avaliação",
                           hint: "DD/MM/AAAA",
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FormatadoresInput.data],
-                          validator: (value) {
-                            // if (value == null || value.isEmpty) return 'Informe a data';
-                            // final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
-                            // if (digits.length != 8) return 'Data incompleta';
-                            return null;
-                          },
+                          keyboardType:
+                          TextInputType.number,
+                          inputFormatters: [
+                            FormatadoresInput.data
+                          ],
+                          validator: (value) => null,
                         ),
+
                         _buildTextField(
                           controller: horarioProxController,
-                          label: "Horário da Próxima Avaliação",
+                          label:
+                          "Horário da Próxima Avaliação",
                           hint: "HH:mm",
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [FormatadoresInput.hora], // Usando o formatador de hora
-                          validator: (value) {
-                            // if (value == null || value.isEmpty) return 'Informe o horário';
-                            // final digits = value.replaceAll(RegExp(r'[^0-9]'), '');
-                            // // Alterando a verificação para aceitar o formato HH:mm
-                            // if (digits.length != 4) return 'Horário incompleto. Exemplo: 08:30';
-                            return null;
-                          },
+                          keyboardType:
+                          TextInputType.number,
+                          inputFormatters: [
+                            FormatadoresInput.hora
+                          ],
+                          validator: (value) => null,
                         ),
+
                         const SizedBox(height: 24),
+
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: _irParaProximaTela,
-                            child: const Text("Próximo"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.lightGreen,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
+                            style:
+                            ElevatedButton.styleFrom(
+                              backgroundColor:
+                              Colors.lightGreen,
+                              foregroundColor:
+                              Colors.white,
+                              padding:
+                              const EdgeInsets.symmetric(
+                                  vertical: 16),
+                              shape:
+                              RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(
+                                    8),
                               ),
                             ),
+                            child: const Text("Próximo"),
                           ),
                         ),
                       ],

@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:projeto_final_personal_trainer/visao/tela_inicial.dart';
@@ -8,7 +10,7 @@ import '../modelo/aluno.dart';
 import '../modelo/calculadora_imc.dart';
 import '../modelo/calculadora_tmb.dart';
 import '../modelo/gerador_pdf.dart';
-import '../util/formatadores_input.dart'; // Importa os formatadores
+import '../util/formatadores_input.dart';
 
 class TelaImc extends StatefulWidget {
   final Aluno aluno;
@@ -31,8 +33,10 @@ class _TelaImcState extends State<TelaImc> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _calcularImc() {
-    final double? altura = double.tryParse(_alturaController.text.replaceAll(',', '.'));
-    final double? peso = double.tryParse(_pesoController.text.replaceAll(',', '.'));
+    final double? altura =
+    double.tryParse(_alturaController.text.replaceAll(',', '.'));
+    final double? peso =
+    double.tryParse(_pesoController.text.replaceAll(',', '.'));
 
     if (altura == null || peso == null || altura <= 0 || peso <= 0) {
       setState(() {
@@ -41,20 +45,30 @@ class _TelaImcState extends State<TelaImc> {
       return;
     }
 
-    final resultado = CalculadoraImc.classificarImc(peso, altura, _sexoSelecionado);
+    final resultado = CalculadoraImc.classificarImc(
+        peso, altura, _sexoSelecionado);
+
     setState(() {
       _resultadoImc = "IMC: $resultado";
     });
   }
 
   void _calcularTmb() {
-    final double? altura = double.tryParse(_alturaController.text.replaceAll(',', '.'));
-    final double? peso = double.tryParse(_pesoController.text.replaceAll(',', '.'));
+    final double? altura =
+    double.tryParse(_alturaController.text.replaceAll(',', '.'));
+    final double? peso =
+    double.tryParse(_pesoController.text.replaceAll(',', '.'));
     final int? idade = int.tryParse(_idadeController.text);
 
-    if (altura == null || peso == null || idade == null || altura <= 0 || peso <= 0 || idade <= 0) {
+    if (altura == null ||
+        peso == null ||
+        idade == null ||
+        altura <= 0 ||
+        peso <= 0 ||
+        idade <= 0) {
       setState(() {
-        _resultadoTmb = "Insira valores válidos para altura, peso e idade.";
+        _resultadoTmb =
+        "Insira valores válidos para altura, peso e idade.";
       });
       return;
     }
@@ -79,20 +93,27 @@ class _TelaImcState extends State<TelaImc> {
         'Data de Nascimento': widget.aluno.nascimento,
         'Telefone': widget.aluno.telefone,
         'Email': widget.aluno.email,
-        'Data da Próxima Avaliação': widget.aluno.dataProximaAvaliacao,
-        'Horário da Próxima Avaliação': widget.aluno.horarioProximaAvaliacao,
+        'Data da Próxima Avaliação':
+        widget.aluno.dataProximaAvaliacao,
+        'Horário da Próxima Avaliação':
+        widget.aluno.horarioProximaAvaliacao,
       },
       dobrasCutaneas: {
         'Tríceps': widget.aluno.triceps ?? 'Não informado',
-        'Subescapular': widget.aluno.subescapular ?? 'Não informado',
-        'Suprailíaca': widget.aluno.suprailica ?? 'Não informado',
-        'Abdômen (Dobra)': widget.aluno.abdomenDobras ?? 'Não informado',
+        'Subescapular':
+        widget.aluno.subescapular ?? 'Não informado',
+        'Suprailíaca':
+        widget.aluno.suprailica ?? 'Não informado',
+        'Abdômen (Dobra)':
+        widget.aluno.abdomenDobras ?? 'Não informado',
       },
       circunferencias: {
         'Braço (dir)': widget.aluno.bracoDir ?? 'Não informado',
         'Braço (esq)': widget.aluno.bracoEsq ?? 'Não informado',
-        'Antibraço (dir)': widget.aluno.antebracoDir ?? 'Não informado',
-        'Antibraço (esq)': widget.aluno.antebracoEsq ?? 'Não informado',
+        'Antibraço (dir)':
+        widget.aluno.antebracoDir ?? 'Não informado',
+        'Antibraço (esq)':
+        widget.aluno.antebracoEsq ?? 'Não informado',
         'Abdômen': widget.aluno.abdomenCirc ?? 'Não informado',
         'Quadril': widget.aluno.quadril ?? 'Não informado',
         'Cintura': widget.aluno.cintura ?? 'Não informado',
@@ -106,8 +127,12 @@ class _TelaImcState extends State<TelaImc> {
         'Peso': _pesoController.text,
         'Idade': _idadeController.text,
         'Sexo': _sexoSelecionado,
-        'Resultado IMC': _resultadoImc.startsWith('IMC') ? _resultadoImc : 'Não calculado',
-        'Resultado TMB': _resultadoTmb.startsWith('TMB') ? _resultadoTmb : 'Não calculado',
+        'Resultado IMC': _resultadoImc.startsWith('IMC')
+            ? _resultadoImc
+            : 'Não calculado',
+        'Resultado TMB': _resultadoTmb.startsWith('TMB')
+            ? _resultadoTmb
+            : 'Não calculado',
       },
     );
   }
@@ -125,51 +150,89 @@ class _TelaImcState extends State<TelaImc> {
             color: Colors.white,
             fontWeight: FontWeight.bold,
             shadows: [
-              Shadow(color: Colors.black, blurRadius: 4, offset: Offset(2, 2)),
+              Shadow(
+                  color: Colors.black,
+                  blurRadius: 4,
+                  offset: Offset(2, 2)),
             ],
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon:
+          const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: Stack(
         children: [
           Positioned.fill(
-            child: Image.asset('assets/images/academia8.png', fit: BoxFit.cover),
+            child: Image.asset(
+              'assets/images/academia8.png',
+              fit: BoxFit.cover,
+            ),
           ),
-          Container(color: const Color.fromARGB(90, 0, 0, 0)),
+
+          Container(color: const Color.fromARGB(140, 0, 0, 0)),
+
           SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 100, left: 24.0, right: 24.0, bottom: 24.0),
+            padding: const EdgeInsets.only(
+                top: 100,
+                left: 24,
+                right: 24,
+                bottom: 24),
             child: Form(
               key: _formKey,
               child: Column(
                 children: [
-                  _buildTextField(_alturaController, 'Altura em metros (ex: 1.70)', FormatadoresInput.altura),
+                  _buildTextField(
+                      _alturaController,
+                      'Altura (ex: 1.70)',
+                      FormatadoresInput.altura),
                   const SizedBox(height: 16),
-                  _buildTextField(_pesoController, 'Peso em Kilos (ex: 75)', FormatadoresInput.peso),
+
+                  _buildTextField(
+                      _pesoController,
+                      'Peso (ex: 75)',
+                      FormatadoresInput.peso),
                   const SizedBox(height: 16),
-                  _buildTextField(_idadeController, 'Idade (ex: 23)', FormatadoresInput.idade),
+
+                  _buildTextField(
+                      _idadeController,
+                      'Idade',
+                      FormatadoresInput.idade),
                   const SizedBox(height: 16),
+
                   _buildDropdownSexo(),
                   const SizedBox(height: 24),
-                  _buildBotao("Calcular Índice de Massa Corporal (IMC)", _calcularImc),
+
+                  _buildBotao(
+                      "Calcular IMC", _calcularImc),
                   const SizedBox(height: 12),
                   _buildResultadoTexto(_resultadoImc),
+
                   const SizedBox(height: 32),
-                  _buildBotao("Calcular Taxa Metabólica Basal (TMB)", _calcularTmb),
+
+                  _buildBotao(
+                      "Calcular TMB", _calcularTmb),
                   const SizedBox(height: 12),
                   _buildResultadoTexto(_resultadoTmb),
+
                   const SizedBox(height: 32),
-                  _buildBotao("Gerar PDF", _gerarPdf, color: Colors.redAccent),
+
+                  _buildBotao(
+                      "Gerar PDF",
+                      _gerarPdf,
+                      color: Colors.redAccent),
+
                   const SizedBox(height: 24),
+
                   _buildBotao(
                     "Ir para Tela Principal",
                         () {
-                      // Modificação: Navegação direta sem validação de formulário
                       Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => TelaInicial()),
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                TelaInicial()),
                       );
                     },
                     color: Colors.blueAccent,
@@ -183,73 +246,111 @@ class _TelaImcState extends State<TelaImc> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label, TextInputFormatter formatter) {
-    return TextFormField(
-      controller: controller,
-      keyboardType: TextInputType.number,
-      inputFormatters: [formatter],
-      style: const TextStyle(color: Colors.black45, fontWeight: FontWeight.bold),
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: const TextStyle(color: Colors.black45, fontWeight: FontWeight.bold),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black45),
-          borderRadius: BorderRadius.circular(10),
+  Widget _buildTextField(TextEditingController controller,
+      String label, TextInputFormatter formatter) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: BackdropFilter(
+          filter:
+          ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.4),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.2),
+              ),
+            ),
+            child: TextFormField(
+              controller: controller,
+              keyboardType: TextInputType.number,
+              inputFormatters: [formatter],
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600),
+              decoration: InputDecoration(
+                labelText: label,
+                labelStyle: const TextStyle(
+                    color: Colors.white),
+                border: InputBorder.none,
+                contentPadding:
+                const EdgeInsets.symmetric(
+                    horizontal: 16, vertical: 14),
+              ),
+            ),
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black45),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        filled: true,
-        fillColor: Colors.white60, // Definindo o fillColor para todos os campos
       ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Por favor, insira o valor';
-        }
-        return null;
-      },
     );
   }
 
   Widget _buildDropdownSexo() {
-    return DropdownButtonFormField<String>(
-      value: _sexoSelecionado,
-      dropdownColor: Colors.white, // Cor mais clara para o dropdown
-      style: const TextStyle(color: Colors.black, fontWeight: FontWeight.bold), // Texto em preto
-      decoration: InputDecoration(
-        labelText: 'Sexo',
-        labelStyle: const TextStyle(color: Colors.black45, fontWeight: FontWeight.bold),
-        enabledBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black45),
-          borderRadius: BorderRadius.circular(10),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: BackdropFilter(
+          filter:
+          ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.4),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.2),
+              ),
+            ),
+            child: DropdownButtonFormField<String>(
+              value: _sexoSelecionado,
+              dropdownColor: Colors.grey[900],
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600),
+              decoration: const InputDecoration(
+                labelText: 'Sexo',
+                labelStyle:
+                TextStyle(color: Colors.white),
+                border: InputBorder.none,
+                contentPadding:
+                EdgeInsets.symmetric(
+                    horizontal: 16),
+              ),
+              items: const [
+                DropdownMenuItem(
+                    value: 'Masculino',
+                    child: Text('Masculino',
+                        style:
+                        TextStyle(color: Colors.white))),
+                DropdownMenuItem(
+                    value: 'Feminino',
+                    child: Text('Feminino',
+                        style:
+                        TextStyle(color: Colors.white))),
+              ],
+              onChanged: (value) {
+                setState(() {
+                  _sexoSelecionado = value!;
+                });
+              },
+            ),
+          ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: const BorderSide(color: Colors.black45),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        filled: true,
-        fillColor: Colors.white60, // Cor de fundo mais clara para o Dropdown
       ),
-      items: const [
-        DropdownMenuItem(value: 'Masculino', child: Text('Masculino', style: TextStyle(color: Colors.black45))),
-        DropdownMenuItem(value: 'Feminino', child: Text('Feminino', style: TextStyle(color: Colors.black45))),
-      ],
-      onChanged: (value) {
-        setState(() {
-          _sexoSelecionado = value!;
-        });
-      },
     );
   }
 
-  Widget _buildBotao(String texto, VoidCallback onPressed, {Color color = Colors.teal}) {
+  Widget _buildBotao(String texto,
+      VoidCallback onPressed,
+      {Color color = Colors.teal}) {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
         foregroundColor: Colors.white,
-        minimumSize: const Size.fromHeight(50),
+        minimumSize:
+        const Size.fromHeight(50),
       ),
       child: Text(texto),
     );
@@ -258,7 +359,10 @@ class _TelaImcState extends State<TelaImc> {
   Widget _buildResultadoTexto(String resultado) {
     return Text(
       resultado,
-      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+      style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.white),
       textAlign: TextAlign.center,
     );
   }

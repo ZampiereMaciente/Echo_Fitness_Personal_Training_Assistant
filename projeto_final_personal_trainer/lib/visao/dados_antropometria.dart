@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../modelo/aluno.dart';
 import 'tela_imc.dart';
+import 'dart:ui';
 
 class DadosAntropometria extends StatefulWidget {
   final Aluno aluno;
@@ -14,13 +15,12 @@ class DadosAntropometria extends StatefulWidget {
 class _DadosAntropometriaState extends State<DadosAntropometria> {
   final _formKey = GlobalKey<FormState>();
 
-  // Controllers - Dobras Cutâneas
+  // Controllers
   final tricepsController = TextEditingController();
   final subescapularController = TextEditingController();
   final suprailicaController = TextEditingController();
   final abdomenDobrasController = TextEditingController();
 
-  // Controllers - Circunferências
   final bracoDirController = TextEditingController();
   final bracoEsqController = TextEditingController();
   final antebracoDirController = TextEditingController();
@@ -35,12 +35,10 @@ class _DadosAntropometriaState extends State<DadosAntropometria> {
 
   @override
   void dispose() {
-    // Dispose de todos os controllers
     tricepsController.dispose();
     subescapularController.dispose();
     suprailicaController.dispose();
     abdomenDobrasController.dispose();
-
     bracoDirController.dispose();
     bracoEsqController.dispose();
     antebracoDirController.dispose();
@@ -52,13 +50,11 @@ class _DadosAntropometriaState extends State<DadosAntropometria> {
     coxaEsqController.dispose();
     pernaDirController.dispose();
     pernaEsqController.dispose();
-
     super.dispose();
   }
 
   void _irParaTelaImc() {
     if (_formKey.currentState!.validate()) {
-      // Preenchendo os dados no objeto Aluno
       widget.aluno.triceps = tricepsController.text;
       widget.aluno.subescapular = subescapularController.text;
       widget.aluno.suprailica = suprailicaController.text;
@@ -76,7 +72,6 @@ class _DadosAntropometriaState extends State<DadosAntropometria> {
       widget.aluno.pernaDir = pernaDirController.text;
       widget.aluno.pernaEsq = pernaEsqController.text;
 
-      // Ir para próxima tela
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -88,14 +83,14 @@ class _DadosAntropometriaState extends State<DadosAntropometria> {
 
   @override
   Widget build(BuildContext context) {
-    // Obter altura do AppBar
-    final appBarHeight = MediaQuery.of(context).padding.top + kToolbarHeight;
+    final appBarHeight =
+        MediaQuery.of(context).padding.top + kToolbarHeight;
 
     return Scaffold(
-      extendBodyBehindAppBar: true, // Permite que a imagem apareça atrás do AppBar
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // AppBar transparente
-        elevation: 0, // Remove a sombra
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: const Text(
           'Dados Antropométricos',
           style: TextStyle(
@@ -111,13 +106,13 @@ class _DadosAntropometriaState extends State<DadosAntropometria> {
           ),
         ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon:
+          const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: Stack(
         children: [
-          // Imagem de fundo
           SizedBox.expand(
             child: Image.asset(
               'assets/images/academia6.png',
@@ -125,52 +120,44 @@ class _DadosAntropometriaState extends State<DadosAntropometria> {
             ),
           ),
 
-          // Overlay escuro
           Container(
-            color: const Color.fromARGB(90, 0, 0, 0),
+            color: const Color.fromARGB(140, 0, 0, 0),
           ),
 
-          // Conteúdo principal
           SingleChildScrollView(
-            padding: EdgeInsets.fromLTRB(16, appBarHeight + 16, 16, 16),
+            padding: EdgeInsets.fromLTRB(
+                16, appBarHeight + 16, 16, 16),
             child: Form(
               key: _formKey,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment:
+                CrossAxisAlignment.start,
                 children: [
-                  const Text('Dobras Cutâneas (mm)',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black,
-                            blurRadius: 4,
-                            offset: Offset(2, 2),
-                          ),
-                        ],
-                      )),
+                  const Text(
+                    'Dobras Cutâneas (mm)',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                   const SizedBox(height: 8),
+
                   _buildTextField("Tríceps", tricepsController),
                   _buildTextField("Subescapular", subescapularController),
                   _buildTextField("Suprailíaca", suprailicaController),
                   _buildTextField("Abdômen", abdomenDobrasController),
 
                   const SizedBox(height: 24),
-                  const Text('Circunferências (cm)',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            color: Colors.black,
-                            blurRadius: 4,
-                            offset: Offset(2, 2),
-                          ),
-                        ],
-                      )),
+
+                  const Text(
+                    'Circunferências (cm)',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
                   const SizedBox(height: 8),
 
                   _buildTextField("Braço (dir)", bracoDirController),
@@ -186,12 +173,14 @@ class _DadosAntropometriaState extends State<DadosAntropometria> {
                   _buildTextField("Perna (esq)", pernaEsqController),
 
                   const SizedBox(height: 20),
+
                   ElevatedButton(
                     onPressed: _irParaTelaImc,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.lightGreen,
                       foregroundColor: Colors.white,
-                      minimumSize: const Size.fromHeight(50),
+                      minimumSize:
+                      const Size.fromHeight(50),
                     ),
                     child: const Text("Próximo"),
                   ),
@@ -204,32 +193,44 @@ class _DadosAntropometriaState extends State<DadosAntropometria> {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller) {
+  Widget _buildTextField(
+      String label, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
-      child: TextFormField(
-        controller: controller,
-        decoration: InputDecoration(
-          labelText: label,
-          filled: true,
-          fillColor: Colors.white70,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10), // Borda arredondada
-            borderSide: const BorderSide(color: Colors.black45),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10), // Borda arredondada
-            borderSide: const BorderSide(color: Colors.black45),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: BackdropFilter(
+          filter:
+          ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.black.withOpacity(0.4),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color: Colors.white.withOpacity(0.2),
+              ),
+            ),
+            child: TextFormField(
+              controller: controller,
+              keyboardType: TextInputType.number,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.w600,
+              ),
+              decoration: InputDecoration(
+                labelText: label,
+                labelStyle:
+                const TextStyle(color: Colors.white),
+                border: InputBorder.none,
+                contentPadding:
+                const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 14,
+                ),
+              ),
+            ),
           ),
         ),
-        keyboardType: TextInputType.number,
-        validator: (value) {
-          // if para verificar se os valores forem nulos dos campos de antoprometria
-        //   if (value == null || value.isEmpty) {
-        //     return 'Informe o valor';
-        //   }
-          return null;
-        },
       ),
     );
   }
