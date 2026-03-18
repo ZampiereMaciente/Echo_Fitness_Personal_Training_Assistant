@@ -17,7 +17,6 @@ This app helps fitness professionals streamline their workflow by allowing them 
 - Easily share results with clients
 
 ---
-<img width="1065" height="894" alt="Screenshot 2026-03-18 at 10 27 54" src="https://github.com/user-attachments/assets/d23cc66f-529b-4cef-8e1f-48e7e5ecd243" />
 
 ## 🚀 Features
 
@@ -46,7 +45,7 @@ This app helps fitness professionals streamline their workflow by allowing them 
 
 Below are some screens of the application:
 
-![App Screens](<img width="1065" height="894" alt="Screenshot 2026-03-18 at 10 27 54" src="https://github.com/user-attachments/assets/d23cc66f-529b-4cef-8e1f-48e7e5ecd243" />)
+<img width="1065" height="894" alt="Screenshot 2026-03-18 at 10 27 54" src="https://github.com/user-attachments/assets/d23cc66f-529b-4cef-8e1f-48e7e5ecd243" />
 
 ---
 
